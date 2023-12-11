@@ -44,10 +44,15 @@ fn main() {
         let secim = String::new();
         let secim = take_input(secim.clone());
         let secim = parse_u32(secim.clone());
+        
+        if secim == 0 {
+            panic!("Çıkış!");
+            
+        }
 
         loop {
             match secim {
-                0 => {break;},
+                0 => {break;}
         
                 1 => {
                     println!("\n0) Geri\n1) Ürün Ekle \n2) Ürün Sil \n3) Ürün Düzenle \n4) Envanteri Göster");
