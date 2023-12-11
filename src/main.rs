@@ -86,8 +86,8 @@ fn main() {
                     break;
                 }
                 _ => println!("Geçersiz değer."),
-        }    
-    }
+            }    
+        }
     }
 }
 
