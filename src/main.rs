@@ -1,5 +1,6 @@
 use std::io;
 mod users;
+use chrono::prelude::*;
 fn main() {
     let user_db = users::UserDatabase::new();
 
@@ -54,7 +55,7 @@ fn main() {
                 0 => {break;}
         
                 1 => {
-                    println!("\n0) Geri\n1) Ürün Ekle \n2) Ürün Sil \n3) Ürün Düzenle \n4) Envanteri Göster");
+                    println!("\n0) Geri\n1) Ürün Ekle \n2) Ürün Sil \n3) Envanteri Göster \n4) Logs");
                     
                     let secim_1 = String::new();
                     let secim_1 = take_input(secim_1);
@@ -74,11 +75,12 @@ fn main() {
                         }
 
                         3 =>{
-                            // Düzenleme
+                            inventory.display();
+                            break;
                         }
 
                         4 =>{
-                            inventory.display();
+                            inventory.display_history();
                             break;
                         }
                         
@@ -103,7 +105,17 @@ struct Product{
 }
 
 struct Inventory{
-    product: Vec<Product>
+    product: Vec<Product>,
+    history: Vec<History>
+}
+
+struct History{
+    eklenen_urun: String,
+    zaman: DateTime<Utc>,
+}
+
+trait HistoryManagemnt {
+    fn history(&mut self) -> String;
 }
 
 trait InventoryManagement  {
@@ -112,7 +124,7 @@ trait InventoryManagement  {
     fn delete_product(&mut self) -> Product;
     fn set_produect(&mut self) -> Product;
     fn display(&mut self) -> Product;
-    fn history(&mut self) -> String;
+    fn display_history(&mut self);
 }
 
 trait SalesManagement {
@@ -122,7 +134,9 @@ trait SalesManagement {
 
 impl Inventory {
     fn new() -> Inventory {
-        Inventory { product: Vec::new() }
+        Inventory {
+            product: Vec::new(),
+            history: Vec::new(), }
     }
 
     fn add_product(&mut self){
@@ -151,6 +165,13 @@ impl Inventory {
             miktar,};
             
         self.product.push(new_product);
+
+        let new_history = History {
+            eklenen_urun: urun_adi.clone(),
+            zaman: Utc::now(),
+        };
+
+        self.history.push(new_history);
 
         println!("Maliyet= {}", fiyat*miktar);
     }
@@ -219,8 +240,10 @@ impl Inventory {
         }
     }
 
-    fn history(&mut self){
-        
+    fn display_history(&mut self){
+        for x in &self.history{
+            println!("Eklenen Ürün: {}, Zamanı: {}", x.eklenen_urun, x.zaman);
+        }
     }
 }
 
