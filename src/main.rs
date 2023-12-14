@@ -47,7 +47,6 @@ fn main() {
         
         if secim == 0 {
             panic!("Çıkış!");
-            
         }
 
         loop {
@@ -113,10 +112,12 @@ trait InventoryManagement  {
     fn delete_product(&mut self) -> Product;
     fn set_produect(&mut self) -> Product;
     fn display(&mut self) -> Product;
+    fn history(&mut self) -> String;
 }
 
 trait SalesManagement {
     fn sell(&mut self) -> Product;
+    fn buy(&mut self) -> Product;
 }
 
 impl Inventory {
@@ -212,7 +213,14 @@ impl Inventory {
                 let kar = (sale_price - self.product[indeks].fiyat) * amount;
                 println!("Satıştan elde edilen kar: {}", kar);
             }
+            else{
+                println!("Yetersiz stok!");
+            }
         }
+    }
+
+    fn history(&mut self){
+        
     }
 }
 
